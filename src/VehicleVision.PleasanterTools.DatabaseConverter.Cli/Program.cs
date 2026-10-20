@@ -1,23 +1,28 @@
-using VehicleVision.PleasanterTools.DatabaseConverter.Core;
+using System.Reflection;
+using VehicleVision.PleasanterTools.DatabaseConverter.Core.CommandLine;
+using VehicleVision.PleasanterTools.DatabaseConverter.Core.Databases;
 
-// 接続確認だけを行う最小の CLI。ツールの実体はここへ足す。
-// 接続先は環境変数 PLEASANTER_BASE_URL / PLEASANTER_API_KEY で渡す。
-if (args.Length != 1 || args[0] != "check")
+// コンソールへ出す文字列は英語（Azure の Kudu の Debug console で日本語が化けるため）。
+// 実体は Core の ConverterApplication。ここは、実際の入出力・環境変数・DB 接続・Ctrl+C を結びつけるだけ。
+using var cancellation = new CancellationTokenSource();
+Console.CancelKeyPress += (_, e) =>
 {
-    Console.Error.WriteLine("Usage: VehicleVision.PleasanterTools.DatabaseConverter check");
-    return 2;
-}
+    // 1 回目は、実行中のバッチを終えてから止める（途中の表は完了の記録が無いので、--resume で入れ直せる）
+    if (!cancellation.IsCancellationRequested)
+    {
+        e.Cancel = true;
+        cancellation.Cancel();
+        Console.Error.WriteLine("Interrupt received; stopping. Press Ctrl+C again to force quit.");
+    }
+};
 
-try
-{
-    using var httpClient = new HttpClient();
-    var client = new PleasanterApiClient(httpClient, PleasanterOptions.FromEnvironment());
-    var connected = await client.CheckConnectionAsync();
-    Console.WriteLine(connected ? "Connected." : "Connection failed.");
-    return connected ? 0 : 1;
-}
-catch (InvalidOperationException ex)
-{
-    Console.Error.WriteLine(ex.Message);
-    return 2;
-}
+var version = typeof(ConverterApplication).Assembly
+    .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion?.Split('+')[0] ?? "0.0.0";
+var app = new ConverterApplication(
+    new AdoDatabaseOpener(),
+    Console.In,
+    Console.Out,
+    Console.Error,
+    Environment.GetEnvironmentVariable,
+    version);
+return await app.RunAsync(args, cancellation.Token);
