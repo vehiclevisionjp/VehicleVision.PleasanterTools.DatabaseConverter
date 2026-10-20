@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>VehicleVision.PleasanterTools.DatabaseConverter</AssemblyName>
+    <RootNamespace>VehicleVision.PleasanterTools.DatabaseConverter.Cli</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VehicleVision.PleasanterTools.DatabaseConverter.Core\VehicleVision.PleasanterTools.DatabaseConverter.Core.csproj" />
+  </ItemGroup>
+
+</Project>

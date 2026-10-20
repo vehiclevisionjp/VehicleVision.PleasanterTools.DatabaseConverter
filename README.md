@@ -1,28 +1,28 @@
-# VehicleVision.PleasanterTools.Template
+# VehicleVision.PleasanterTools.DatabaseConverter
 
-Pleasanter 向けツールを作るときの、社内用テンプレートリポジトリです。標準 Web API を叩く別アプリとして、C#／.NET 10 で作ります。
+Pleasanter の DB を、**SQL Server・PostgreSQL・MySQL の間で相互に変換する**コマンドラインツールです。
 
-## 含まれるもの
+Pleasanter 本体の CodeDefiner には `migrate`（DB 移行）があります。ただし移行元は SQL Server だけで、移行先は PostgreSQL と MySQL です。
+このツールは、その先の「PostgreSQL → SQL Server」「MySQL → SQL Server」「PostgreSQL ⇄ MySQL」を含めて、対応する 3 つの DBMS の**あらゆる向き**を扱います。
 
-- 最小の Pleasanter API クライアント（`src/VehicleVision.PleasanterTools.Template.Core`）
-- 接続確認の CLI（`src/VehicleVision.PleasanterTools.Template.Cli`）
-- 単体テスト（`tests/`）
-- 参照専用の Pleasanter 本体ソース（`_reference/Implem.Pleasanter`、サブモジュール）
-- CI、CodeQL、依存の脆弱性検査、リリース、参照ソースの定期更新（`.github/workflows/`）
-- AI エージェント向けの共通指示（`.github/copilot-instructions.md`、`AGENTS.md`、`CLAUDE.md`）
+> **開発中です。** まだ動作するものはありません。仕様は [アーキテクチャ方針](_documents/アーキテクチャ方針.md) にあります。
 
-## 使い方
+## 変換できる組み合わせ
 
-接続確認の CLI を動かすには、接続先を環境変数で渡します。
+| 変換元 \ 変換先 | SQL Server | PostgreSQL | MySQL |
+| --- | --- | --- | --- |
+| SQL Server | — | 対象 | 対象 |
+| PostgreSQL | 対象 | — | 対象 |
+| MySQL | 対象 | 対象 | — |
 
-```bash
-export PLEASANTER_BASE_URL=https://pleasanter.example.com
-export PLEASANTER_API_KEY=...
-dotnet run --project src/VehicleVision.PleasanterTools.Template.Cli -- check
-```
+## 方針
 
-新しいツールの作り方は [開発ガイド](_documents/開発ガイド.md) を参照してください。
+- **変換元の DB は読み取りだけ。** 書き換えません
+- **変換先の表の定義は、Pleasanter 本体（CodeDefiner）が作ったものに合わせます。** このツールは表を勝手に設計しません
+- 件数と内容の整合を、変換のあとに確かめます
+- Pleasanter 本体のコードは取り込みません（表と列の定義は、本体のソースを事実確認の参照として読んだ上で、このツールで実装しています）
 
 ## ライセンス
 
-既定は AGPL-3.0-or-later です（[LICENSE](LICENSE)）。商用公開で AGPL と商用のデュアルライセンスにする手順は [ライセンス](_documents/ライセンス.md) を参照してください。依存のライセンスは [NOTICE](NOTICE) にあります。
+AGPL-3.0-or-later と商用のデュアルライセンスです。詳しくは [LICENSING.md](LICENSING.md) を、貢献は [CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
+依存のライセンスは [NOTICE](NOTICE) にあります。開発環境と運用は [開発ガイド](_documents/開発ガイド.md) と [開発運用](_documents/開発運用.md) にあります。
