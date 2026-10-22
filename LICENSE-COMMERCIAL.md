@@ -2,7 +2,9 @@
 
 対象ソフトウェアは **VehicleVision.PleasanterTools.DatabaseConverter**
 
-Copyright (C) PMC Co.,Ltd.
+Copyright (C) 株式会社ピー・エム・シー ITソリューション事業部
+
+本文書で「当社」とは、株式会社ピー・エム・シー ITソリューション事業部を指します。
 
 本文書は、[`LICENSING.md`](LICENSING.md) の選択肢 **B（商用ライセンス）** の概要です。
 **正式な条件は個別に締結する契約書によります。** 本文書は契約書ではありません。
@@ -35,6 +37,6 @@ Copyright (C) PMC Co.,Ltd.
 
 ## お問い合わせ
 
-PMC Co.,Ltd.
+株式会社ピー・エム・シー ITソリューション事業部
 
 > **未記入。** 正式な連絡先（部署・メールアドレス）を記載すること。
