@@ -2,14 +2,16 @@
 
 対象ソフトウェアは **VehicleVision.PleasanterTools.DatabaseConverter**
 
-Copyright (C) PMC Co.,Ltd.
+Copyright (C) 株式会社ピー・エム・シー ITソリューション事業部
+
+本文書で「当社」とは、株式会社ピー・エム・シー ITソリューション事業部を指します。
 
 本ソフトウェアは **デュアルライセンス** で提供されます。利用者は以下のいずれかを選択できます。
 
 | | ライセンス | 全文 | 想定する利用 |
 | --- | --- | --- | --- |
 | A | **GNU AGPL v3 以降**（AGPL-3.0-or-later） | [`LICENSE`](LICENSE) | オープンソースとして利用・改変・再配布する場合 |
-| B | **PMC 商用ライセンス** | [`LICENSE-COMMERCIAL.md`](LICENSE-COMMERCIAL.md) | AGPL の義務を負わずに利用したい場合（個別契約） |
+| B | **株式会社ピー・エム・シー ITソリューション事業部 商用ライセンス** | [`LICENSE-COMMERCIAL.md`](LICENSE-COMMERCIAL.md) | AGPL の義務を負わずに利用したい場合（個別契約） |
 
 SPDX 表記： `AGPL-3.0-or-later OR LicenseRef-PMC-Commercial`
 
@@ -38,7 +40,8 @@ AGPL の義務（ソースコード開示・コピーレフト）を負わずに
 - AGPL の義務範囲について社内の法務判断が難しい
 - 保守・サポート・SLA を契約に含めたい
 
-**お問い合わせ：** PMC Co.,Ltd.（連絡先は [`LICENSE-COMMERCIAL.md`](LICENSE-COMMERCIAL.md) を参照）
+**お問い合わせ：** 株式会社ピー・エム・シー ITソリューション事業部
+（連絡先は [`LICENSE-COMMERCIAL.md`](LICENSE-COMMERCIAL.md) を参照）
 
 ## Pleasanter との関係（デュアルライセンスの前提）
 
@@ -52,7 +55,7 @@ AGPL の義務（ソースコード開示・コピーレフト）を負わずに
   ビルド対象にも配布物にも含めません
 
 そのため、本ソフトウェアのライセンスは Pleasanter のライセンスに拘束されず、
-**著作権者である PMC Co.,Ltd. が自由に決定できます。これがデュアルライセンスを
+**著作権者である株式会社ピー・エム・シー ITソリューション事業部が自由に決定できます。これがデュアルライセンスを
 成立させている前提です。**
 
 > **AGPL 側だけを見て「どうせ AGPL なのだから本体を取り込んでもよい」と考えないこと。**
