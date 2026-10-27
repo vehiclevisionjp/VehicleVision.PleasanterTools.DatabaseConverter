@@ -18,7 +18,8 @@ foreach ($file in @('LICENSE', 'NOTICE', 'README.md')) {
 Copy-Item -LiteralPath (Join-Path $repoRoot '_documents') -Destination $appDirectory -Recurse
 $forbidden = Get-ChildItem -LiteralPath $appDirectory -Recurse -File | Where-Object {
     $_.Name -in @('appsettings.Local.json', '.env') -or
-    $_.Extension -in @('.pfx', '.pem', '.key', '.pdb') -or $_.FullName -match '[/\\]_reference[/\\]'
+    $_.Extension -in @('.pfx', '.pem', '.key', '.pdb') -or
+    $_.FullName -match '[/\\](?:_reference|\.git)(?:[/\\]|$)'
 }
 if ($forbidden) { throw '配布対象外の設定・秘密・参照ソース・pdb が検出されました。' }
 $commit = git -C $repoRoot rev-parse HEAD
