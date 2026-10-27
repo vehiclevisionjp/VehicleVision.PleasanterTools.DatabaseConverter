@@ -1,0 +1,141 @@
+# 3 つの DBMS（SQL Server / PostgreSQL / MySQL）へ実際に当てる結合テスト。
+# Pleasanter の本物の表は使えないので、テストが Pleasanter の表を模した小さな表を作り、6 通りの変換を実際に行う。
+#
+# **ここで定義したジョブ名は必須ステータスチェックへ登録する。以後変えないこと**
+# （_documents/ブランチ運用方針.md「ブランチ保護」）。
+#
+# **1 ジョブにまとめて直列で回す。** 接続先は tests 側が環境変数（DBCONV_TEST_*）から読む。
+# **設定しないと、その DBMS のテストは何も流れずに緑になる。** そのため DBCONV_REQUIRE_ALL_RDBMS=1 を立て、
+# 未設定の DBMS があればテストが落ちるようにしてある（TestDatabasesTests.CIでは全RDBMSが設定されている）。
+#
+# 書き方は Core リポジトリの integration.yml に倣った。
+#   - サービスコンテナ: https://docs.github.com/actions/using-containerized-services/about-service-containers
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+  # **検証環境用の固定値。** 本番の資格情報ではない
+  TESTENV_SA_PASSWORD: Dbconv#Test1
+
+jobs:
+  integration:
+    name: integration
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2025-CU8-ubuntu-24.04
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: Dbconv#Test1
+          MSSQL_PID: Developer
+          TZ: Asia/Tokyo
+        ports:
+          - 11434:1433
+
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_PASSWORD: Dbconv#Test1
+          POSTGRES_DB: dbconv
+          # UTC にしない。サーバの時間帯が UTC だと、ドライバの日時変換の事故を見つける検証が素通りする
+          TZ: Asia/Tokyo
+        ports:
+          - 15433:5432
+
+      # サービスコンテナは起動コマンドを差し替えられない。文字集合は起動後に ALTER DATABASE で合わせる
+      mysql:
+        image: mysql:26
+        env:
+          MYSQL_ROOT_PASSWORD: Dbconv#Test1
+          MYSQL_DATABASE: dbconv
+          TZ: Asia/Tokyo
+        ports:
+          - 13307:3306
+
+    steps:
+      - name: ソースを取得する
+        uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+
+      - name: .NET SDK を用意する
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: DB の起動を待つ
+        run: |
+          set -euo pipefail
+
+          wait_for() {
+              local label="$1" tries="$2"
+              shift 2
+              for i in $(seq 1 "$tries"); do
+                  if "$@" >/dev/null 2>&1; then
+                      echo "OK   $label（${i} 回目）"
+                      return 0
+                  fi
+                  sleep 5
+              done
+              echo "NG   $label が起動しない" >&2
+              return 1
+          }
+
+          wait_for "SQL Server" 60 \
+              docker exec ${{ job.services.sqlserver.id }} \
+              /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$TESTENV_SA_PASSWORD" -C -b -Q "SELECT 1"
+
+          wait_for "PostgreSQL" 60 \
+              docker exec ${{ job.services.postgres.id }} pg_isready -U postgres
+
+          wait_for "MySQL" 60 \
+              docker exec ${{ job.services.mysql.id }} \
+              mysqladmin ping -h 127.0.0.1 -uroot -p"$TESTENV_SA_PASSWORD"
+
+      - name: DB を検証環境と同じ状態にする
+        run: |
+          set -euo pipefail
+
+          # SQL Server にはデータベースが要る（テストは表だけを作る）
+          docker exec ${{ job.services.sqlserver.id }} \
+              /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$TESTENV_SA_PASSWORD" -C -b \
+              -Q "IF DB_ID('dbconv') IS NULL CREATE DATABASE [dbconv];"
+
+          # utf8mb4 を明示する（大文字小文字・アクセントを区別する照合順序。一意制約の衝突は、列ごとに COLLATE を指定して作る）
+          docker exec ${{ job.services.mysql.id }} \
+              mysql -uroot -p"$TESTENV_SA_PASSWORD" \
+              -e "ALTER DATABASE dbconv CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs;"
+
+      - name: 結合テストを実行する
+        env:
+          # **設定しないと何も検証せずに緑になる。** ここが本ワークフローの肝
+          DBCONV_REQUIRE_ALL_RDBMS: "1"
+          DBCONV_TEST_SQLSERVER: "Server=localhost,11434;Database=dbconv;User Id=sa;Password=Dbconv#Test1;TrustServerCertificate=True"
+          DBCONV_TEST_POSTGRESQL: "Host=localhost;Port=15433;Database=dbconv;Username=postgres;Password=Dbconv#Test1"
+          DBCONV_TEST_MYSQL: "Server=localhost;Port=13307;Database=dbconv;User=root;Password=Dbconv#Test1"
+          # 実行環境の時間帯は既定 UTC。検証環境に合わせる
+          TZ: Asia/Tokyo
+        run: >-
+          dotnet test tests/VehicleVision.PleasanterTools.DatabaseConverter.Integration.Tests
+          -c Release

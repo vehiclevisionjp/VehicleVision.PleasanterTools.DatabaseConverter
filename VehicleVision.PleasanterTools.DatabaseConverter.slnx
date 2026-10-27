@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VehicleVision.PleasanterTools.DatabaseConverter.Core/VehicleVision.PleasanterTools.DatabaseConverter.Core.csproj" />
+    <Project Path="src/VehicleVision.PleasanterTools.DatabaseConverter.Cli/VehicleVision.PleasanterTools.DatabaseConverter.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VehicleVision.PleasanterTools.DatabaseConverter.Core.Tests/VehicleVision.PleasanterTools.DatabaseConverter.Core.Tests.csproj" />
+    <Project Path="tests/VehicleVision.PleasanterTools.DatabaseConverter.Integration.Tests/VehicleVision.PleasanterTools.DatabaseConverter.Integration.Tests.csproj" />
+  </Folder>
+</Solution>
