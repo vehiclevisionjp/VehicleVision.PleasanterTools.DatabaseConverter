@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <!-- 単体では公開しない。Cli の dotnet tool パッケージへ同梱される -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
   <ItemGroup>
     <InternalsVisibleTo Include="VehicleVision.PleasanterTools.DatabaseConverter.Core.Tests" />
   </ItemGroup>
