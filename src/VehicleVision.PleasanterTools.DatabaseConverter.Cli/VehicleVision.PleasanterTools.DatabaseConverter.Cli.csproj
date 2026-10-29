@@ -6,6 +6,30 @@
     <RootNamespace>VehicleVision.PleasanterTools.DatabaseConverter.Cli</RootNamespace>
   </PropertyGroup>
 
+  <!-- nuget.org へ dotnet tool として公開する。RID 非依存（framework-dependent）の単一パッケージで、
+       .NET 10 ランタイムが要る。Core はこのパッケージの tools/ に同梱される（単体では公開しない）。
+       手順は _documents/リリース手順.md。 -->
+  <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>database-converter</ToolCommandName>
+    <PackageId>VehicleVision.PleasanterTools.DatabaseConverter</PackageId>
+    <Description>Pleasanter の DB を、SQL Server・PostgreSQL・MySQL の間で相互に変換するコマンドラインツール。</Description>
+    <PackageTags>Pleasanter;database;migration;SQLServer;PostgreSQL;MySQL;dotnet-tool</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/vehiclevisionjp/VehicleVision.PleasanterTools.DatabaseConverter</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ライセンス文書は LICENSING.md を PackageLicenseFile（Directory.Build.props）で指す。
+         LICENSING.md は dotnet tool の pack が自動で同梱するので、ここへ書かない（書くと NU5118 で失敗する）。
+         ライセンスの全文（AGPL・商用）と NOTICE を、あわせて同梱する -->
+    <None Include="..\..\README.md" Pack="true" PackagePath="" Visible="false" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" Visible="false" />
+    <None Include="..\..\LICENSE-COMMERCIAL.md" Pack="true" PackagePath="" Visible="false" />
+    <None Include="..\..\NOTICE" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\VehicleVision.PleasanterTools.DatabaseConverter.Core\VehicleVision.PleasanterTools.DatabaseConverter.Core.csproj" />
   </ItemGroup>
