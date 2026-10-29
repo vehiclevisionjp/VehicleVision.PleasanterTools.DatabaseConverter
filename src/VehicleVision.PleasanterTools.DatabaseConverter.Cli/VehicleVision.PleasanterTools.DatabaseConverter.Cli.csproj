@@ -11,7 +11,7 @@
        手順は _documents/リリース手順.md。 -->
   <PropertyGroup>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>pleasanter-db-converter</ToolCommandName>
+    <ToolCommandName>database-converter</ToolCommandName>
     <PackageId>VehicleVision.PleasanterTools.DatabaseConverter</PackageId>
     <Description>Pleasanter の DB を、SQL Server・PostgreSQL・MySQL の間で相互に変換するコマンドラインツール。</Description>
     <PackageTags>Pleasanter;database;migration;SQLServer;PostgreSQL;MySQL;dotnet-tool</PackageTags>

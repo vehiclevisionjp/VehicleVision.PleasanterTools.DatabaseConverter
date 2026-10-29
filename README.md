@@ -22,10 +22,10 @@ Pleasanter 本体の CodeDefiner には `migrate`（DB 移行）があります�
 
 .NET 10 ランタイムが必要です（実行にはランタイムだけで足りますが、`dotnet tool install` には .NET 10 SDK が要ります）。次のどちらかで導入できます。
 
-- **dotnet tool（nuget.org）**: `dotnet tool install -g VehicleVision.PleasanterTools.DatabaseConverter` で入れ、`pleasanter-db-converter` コマンドで実行します。更新は `dotnet tool update -g VehicleVision.PleasanterTools.DatabaseConverter` です
+- **dotnet tool（nuget.org）**: `dotnet tool install -g VehicleVision.PleasanterTools.DatabaseConverter` で入れ、`database-converter` コマンドで実行します。更新は `dotnet tool update -g VehicleVision.PleasanterTools.DatabaseConverter` です
 - **配布 ZIP（GitHub Releases）**: `VehicleVision.PleasanterTools.DatabaseConverter-<版>-portable.zip` を展開します
 
-以下の例の `VehicleVision.PleasanterTools.DatabaseConverter` は、dotnet tool では `pleasanter-db-converter` に読み替えてください。
+以下の例の `VehicleVision.PleasanterTools.DatabaseConverter` は、dotnet tool では `database-converter` に読み替えてください。
 
 ## 使い方
 
