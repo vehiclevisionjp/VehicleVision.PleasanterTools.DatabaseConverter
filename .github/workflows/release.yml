@@ -157,9 +157,6 @@ jobs:
       # nuget.org へ渡す OIDC トークンを発行するために要る
       id-token: write
     steps:
-      - uses: actions/setup-dotnet@v6
-        with:
-          global-json-file: global.json
       - uses: actions/download-artifact@v8
         with:
           name: NuGet パッケージ
