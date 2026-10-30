@@ -10,4 +10,4 @@ Pleasanter 本体は Git で追跡しない参照専用ソースであり、実�
 文書には確認した完全な SHA・ソースへの固定リンク・参照日を残す。実機未検証なら明記する。
 正式な編集元は `.github/copilot-instructions.md`。
 
-外部記憶は、必要になった時点で `<リポジトリ名>.ClaudeMemory`（Internal）を作って管理する。現時点では作っていない。作ったらここへ URL を書く。
+外部記憶は、個別のリポジトリを作らず、Internal の `VehicleVision.PleasanterTools.ClaudeMemory` に `DatabaseConverter/` フォルダを作って管理する。現時点ではフォルダを作っていない。
