@@ -50,13 +50,16 @@ AGPL の義務（ソースコード開示・コピーレフト）を負わずに
 
 ## Pleasanter との関係（デュアルライセンスの前提）
 
+<!-- license:begin independence=app -->
 本ソフトウェアは Pleasanter（株式会社インプリム, AGPL v3）の
 **独立した別アプリケーション**です。
+<!-- license:end independence -->
 
 - 本体のソースコードを **複製・改変・リンク・プロジェクト参照していません**。Pleasanter のアセンブリも参照しません
 - Pleasanter の派生著作物ではありません
-  <!-- license:begin connection=db-same -->
-- Pleasanter と**同じデータベースへ直接接続**します。Pleasanter 本体のプログラムは呼び出しません
+  <!-- license:begin connection=db-convert -->
+- Pleasanter の **2 つの DB へ直接接続**します。変換元は**読み取りだけ**を行い、変換先へは**書き込みます**。
+  Pleasanter の Web API は使わず、Pleasanter 本体のプログラムも呼び出しません
   <!-- license:end connection -->
   <!-- license:begin reference=on -->
 - [`_reference/Implem.Pleasanter`](_reference/README.md) は**事実確認のための参照専用**で、
@@ -74,9 +77,8 @@ AGPL の義務（ソースコード開示・コピーレフト）を負わずに
 
 <!-- license:begin pleasanter-note=free -->
 本ソフトウェアは、Pleasanter の DB を SQL Server・PostgreSQL・MySQL の間で相互に変換するコマンドラインツールです。
-上の「直接接続」は、変換元と変換先の 2 つの Pleasanter の DB への接続を指します。
 
-- 変換元の DB へは、読み取り（SELECT）だけを行います。PostgreSQL と MySQL ではセッションも読み取り専用にします
+- 変換元の DB へは SELECT だけを発行します。PostgreSQL と MySQL ではセッションも読み取り専用にします
 - 変換先は、Pleasanter 本体の CodeDefiner が作った空の DB を前提にします。
   表の定義は本ソフトウェアが持たず、変換元と変換先の実際の列（情報スキーマ）を読んで、同名の列を突き合わせてコピーします。
   本ソフトウェアが作る表は、完了の記録用の `__DatabaseConverterProgress` だけです
@@ -85,7 +87,8 @@ AGPL の義務（ソースコード開示・コピーレフト）を負わずに
 ## 依存ソフトウェアについて
 
 本ソフトウェアが利用する OSS は **寛容ライセンス（MIT / BSD 系 / Apache-2.0）** に
-限定します。一覧は [`NOTICE`](NOTICE) を参照してください。推移的依存と実際の版は `packages.lock.json` にあります。
+限定します。一覧は [`NOTICE`](NOTICE) を参照してください。依存の宣言（パッケージ参照）は各 csproj にあり、
+`packages.lock.json` を置いているリポジトリでは、推移的依存と実際の版もそこで確認できます。
 
 <!-- license:begin deps-note=free -->
 DB ドライバ（`Microsoft.Data.SqlClient`・`Npgsql`・`MySqlConnector`）は配布物に含まれます。ライセンスは `NOTICE` にあります。
