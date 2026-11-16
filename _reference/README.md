@@ -83,8 +83,6 @@ csproj の Version を出す。Version を読めないときは警告と `Versio
 
 移植元は Template の SHA `3312f003fbe9827090e20bc643800824bdf30e22`（2026-10-27 参照）。
 
-- [承認済みの配布手順][procedure]
+- 共通の配布手順（承認済みコミット SHA `3312f003fbe9827090e20bc643800824bdf30e22`）
 - [git clone](https://git-scm.com/docs/git-clone)（浅い clone と branch 指定、2026-10-27 参照）
 - [git fetch](https://git-scm.com/docs/git-fetch)（`--depth` と `FETCH_HEAD`、2026-10-27 参照）
-
-[procedure]: https://github.com/vehiclevisionjp/VehicleVision.PleasanterTools.Template/blob/3312f003fbe9827090e20bc643800824bdf30e22/_documents/参照ソースのオンデマンド取得への配布手順.md
