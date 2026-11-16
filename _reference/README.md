@@ -84,11 +84,7 @@ csproj の Version を出す。Version を読めないときは警告と `Versio
 移植元は Template の SHA `3312f003fbe9827090e20bc643800824bdf30e22`（2026-10-27 参照）。
 
 - [承認済みの配布手順][procedure]
-- [決定: vehiclevisionjp/VehicleVision.PleasanterTools.Template#61][decision]
-- [決定: vehiclevisionjp/VehicleVision.PleasanterTools.Template#63][followup]
 - [git clone](https://git-scm.com/docs/git-clone)（浅い clone と branch 指定、2026-10-27 参照）
 - [git fetch](https://git-scm.com/docs/git-fetch)（`--depth` と `FETCH_HEAD`、2026-10-27 参照）
 
 [procedure]: https://github.com/vehiclevisionjp/VehicleVision.PleasanterTools.Template/blob/3312f003fbe9827090e20bc643800824bdf30e22/_documents/参照ソースのオンデマンド取得への配布手順.md
-[decision]: https://github.com/vehiclevisionjp/VehicleVision.PleasanterTools.Template/issues/61
-[followup]: https://github.com/vehiclevisionjp/VehicleVision.PleasanterTools.Template/issues/63
